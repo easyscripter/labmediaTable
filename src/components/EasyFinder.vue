@@ -2,10 +2,12 @@
 <div class="EasyFinder">
   <div class="input-container">
     <img src="../assets/icons/findIcon.svg" alt="find icon">
-    <input :placeholder="placeholderText" :value="value" @input="$emit('input', $event.target.value)">
+    <label>
+      <input :placeholder="placeholderText" :value="value" @input="$emit('input', $event.target.value)">
+    </label>
   </div>
   <button v-show="showButton" class="easyfinder-clear-button"
-          @click="$emit('input', $event.target.value = ''); $emit('clearFilters', clearingFiltres = true)">Очистить
+          @click="$emit('input', $event.target.value = ''); $emit('clearFilters', clearingFilters = true)">Очистить
     фильтр
   </button>
 </div>
@@ -30,7 +32,7 @@ name: "EasyFinder",
   },
   data: () => {
     return {
-      clearingFiltres: false
+      clearingFilters: false
     }
   }
 }

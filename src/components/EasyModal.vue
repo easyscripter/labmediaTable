@@ -1,15 +1,15 @@
 <template>
   <div class="EasyModal">
-    <div :style="{width: `${modalWidth}px`, height: `${modalHeight}px`}" class="easyModal_body">
-      <div class="easyModal_header">
-        <p class="easyModal_title">{{ modalTitle }}</p>
-        <i class="easyModal_close-button" @click="$emit('close')">X</i>
+    <div :style="{width: `${modalWidth}px`, height: `${modalHeight}px`}" class="EasyModal_body">
+      <div class="EasyModal_header">
+        <p class="EasyModal_title">{{ modalTitle }}</p>
+        <i class="EasyModal_close-button" @click="$emit('close')">X</i>
       </div>
-      <div class="easyModal_content">
-        <slot name="easyModal_Content"></slot>
+      <div class="EasyModal_content">
+        <slot name="EasyModal_Content"></slot>
       </div>
-      <div class="easyModal_footer">
-        <slot name="easyModal_Footer"></slot>
+      <div class="EasyModal_footer">
+        <slot name="EasyModal_Footer"></slot>
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "EasyModal.vue",
+  name: "EasyModal",
   props: {
     modalTitle: {
       type: String,
@@ -63,14 +63,14 @@ export default {
     align-items: center;
     padding-top: 20px;
 
-    p.easyModal_title {
+    p.EasyModal_title {
       position: absolute;
       left: 5%;
       font-weight: bold;
       text-transform: uppercase;
     }
 
-    i.easyModal_close-button {
+    i.EasyModal_close-button {
       position: absolute;
       right: 5%;
       cursor: pointer;

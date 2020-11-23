@@ -1,20 +1,29 @@
 <template>
   <div id="app">
     <h1>Список пользователей</h1>
-    <easy-modal v-show="isActiveModal" modal-title="Удалить пользователя" :modal-width="400" :modal-height="200" @close="isActiveModal = false">
-        <template v-slot:easyModal_Content>
-          <p>«Вы уверены, что хотите
-            удалить пользователя»?</p>
-        </template>
-        <template v-slot:easyModal_Footer>
-          <button class="deleteUser-btn" @click="deleteRow(deleteUserIndex)">Да</button>
-          <button class="cancel-btn" @click="isActiveModal = false">Нет</button>
-        </template>
+    <easy-modal v-show="isActiveModal" modal-title="Удалить пользователя" :modal-width="400" :modal-height="200"
+                @close="isActiveModal = false">
+      <template v-slot:EasyModal_Content>
+        <p>Вы уверены, что хотите
+          удалить пользователя?</p>
+      </template>
+      <template v-slot:EasyModal_Footer>
+        <button class="deleteUser-btn" @click="deleteRow(deleteUserIndex)">Да</button>
+        <button class="cancel-btn" @click="isActiveModal = false">Нет</button>
+      </template>
     </easy-modal>
-    <easy-finder :style="{pointerEvents: isActiveModal ? 'none' : 'auto'}" :show-button="!!(this.filterValue.length || this.activeSort.date || this.activeSort.rating)" v-model="filterValue" placeholder-text="Поиск по имени или email" @clearFilters="clearSortAndFilter"></easy-finder>
-    <div :style="{pointerEvents: isActiveModal ? 'none' : 'auto'}" class="sort-container">Сортировка: <p :class="{active: activeSort.date}" @click="sortFromDate()">Дата регистрации</p> <p :class="{active: activeSort.rating}" @click="sortFromRating()">Рейтинг</p></div>
-    <easy-table :style="{pointerEvents: isActiveModal ? 'none' : 'auto'}" columnsName="Имя пользователя, E-mail, Дата регистрации, Рейтинг" >
-      <easyTable-row v-for="(user, index) in filteredUsers" :key="index" :rowValues="`${user.username},${user.email},${formattedDate(user.registration_date)},${user.rating}`" @deleteRow="openDeleteModal(index)"></easyTable-row>
+    <easy-finder :style="{pointerEvents: isActiveModal ? 'none' : 'auto'}"
+                 :show-button="!!(this.filterValue.length || this.activeSort.date || this.activeSort.rating)"
+                 v-model="filterValue" placeholder-text="Поиск по имени или email"
+                 @clearFilters="clearSortAndFilter"></easy-finder>
+    <div :style="{pointerEvents: isActiveModal ? 'none' : 'auto'}" class="sort-container">Сортировка: <p
+        :class="{active: activeSort.date}" @click="sortFromDate()">Дата регистрации</p>
+      <p :class="{active: activeSort.rating}" @click="sortFromRating()">Рейтинг</p></div>
+    <easy-table :style="{pointerEvents: isActiveModal ? 'none' : 'auto'}"
+                columnsName="Имя пользователя, E-mail, Дата регистрации, Рейтинг">
+      <easyTable-row v-for="(user, index) in filteredUsers" :key="index"
+                     :rowValues="`${user.username},${user.email},${formattedDate(user.registration_date)},${user.rating}`"
+                     @deleteRow="openDeleteModal(index)"></easyTable-row>
     </easy-table>
   </div>
 </template>
@@ -26,6 +35,7 @@ import EasyTable from "@/components/EasyTable"
 import EasyTableRow from "@/components/EasyTable-row"
 import EasyFinder from "@/components/EasyFinder"
 import EasyModal from "@/components/EasyModal"
+
 export default {
   name: 'App',
   components: {
@@ -65,7 +75,6 @@ export default {
   },
   created() {
     this.fetchUsers();
-    this.sortedUsers = this.users.slice();
   },
   methods: {
     formattedDate(date) {
@@ -81,8 +90,11 @@ export default {
     },
     async fetchUsers () {
       await axios.get("https://5ebbb8e5f2cfeb001697d05c.mockapi.io/users")
-          .then(response => {this.users = response.data})
+          .then(response => {
+            this.users = response.data
+          })
           .catch(error => console.error(error));
+      this.sortedUsers = this.users.slice();
     },
     deleteRow (index) {
       this.users.splice(index, 1);
