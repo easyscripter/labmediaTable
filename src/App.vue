@@ -113,6 +113,7 @@ export default {
       } else {
         this.reversedDateSortFlag = false;
         this.sortedUsers.sort((first, second) => new Date(first.registration_date) - new Date(second.registration_date))
+        this.switchSort("date");
       }
     },
     sortFromRating() {
@@ -123,6 +124,7 @@ export default {
       } else {
         this.reversedRatingSortFlag = false;
         this.sortedUsers.sort((first, second) => first.rating - second.rating)
+        this.switchSort("rating");
       }
     },
     switchSort(type) {
@@ -167,6 +169,7 @@ export default {
       display: inline-block;
       border-bottom: 1px dashed #000000;
       cursor: pointer;
+      margin-right: 5px;
     }
     .active {
       color: #000000;
