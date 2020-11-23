@@ -23,7 +23,7 @@
                 columnsName="Имя пользователя, E-mail, Дата регистрации, Рейтинг">
       <easyTable-row v-for="(user, index) in filteredUsers" :key="index"
                      :rowValues="`${user.username},${user.email},${formattedDate(user.registration_date)},${user.rating}`"
-                     @deleteRow="openDeleteModal(index)"></easyTable-row>
+                     @deleteRow="openDeleteModal(user.id)"></easyTable-row>
     </easy-table>
   </div>
 </template>
@@ -71,7 +71,7 @@ export default {
         return this.users;
       }
       return this.sortedUsers;
-    }
+    },
   },
   created() {
     this.fetchUsers();
@@ -97,8 +97,8 @@ export default {
       this.sortedUsers = this.users.slice();
     },
     deleteRow (index) {
-      this.users.splice(index, 1);
-      this.sortedUsers.splice(index, 1);
+      this.users.splice(this.users.indexOf(this.users.find(item => item.id === index)), 1);
+      this.sortedUsers.splice(this.sortedUsers.indexOf(this.sortedUsers.find(item => item.id === index)), 1);
       this.isActiveModal = false;
     },
     openDeleteModal(index) {
