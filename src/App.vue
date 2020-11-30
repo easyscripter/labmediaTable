@@ -21,10 +21,18 @@
       <p :class="{active: activeSort.rating}" @click="sortFromRating()">Рейтинг</p></div>
     <easy-table :style="{pointerEvents: isActiveModal ? 'none' : 'auto'}"
                 columnsName="Имя пользователя, E-mail, Дата регистрации, Рейтинг">
-      <easyTable-row v-for="(user, index) in filteredUsers" :key="index"
+      <easyTable-row v-for="(user, index) in paginatedUsers" :key="index"
                      :rowValues="`${user.username},${user.email},${formattedDate(user.registration_date)},${user.rating}`"
                      @deleteRow="openDeleteModal(user.id)"></easyTable-row>
+
     </easy-table>
+    <div class="pages_container">
+      <ul class="pages">
+        <li :class="{page_selected: page === pageNumber}" @click="pageClick(page)" class="page"
+            v-for="(page, index) in pages" :key="index">{{ page }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -56,7 +64,9 @@ export default {
       },
       sortedUsers: [],
       isActiveModal: false,
-      deleteUserIndex: 0
+      deleteUserIndex: 0,
+      pageNumber: 1,
+      usersPerPage: 5,
     }
   },
   computed: {
@@ -72,6 +82,15 @@ export default {
       }
       return this.sortedUsers;
     },
+    pages() {
+      return Math.ceil(this.filteredUsers.length / this.usersPerPage);
+    },
+    paginatedUsers() {
+      let from = (this.pageNumber - 1) * this.usersPerPage;
+      let to = from + this.usersPerPage;
+
+      return this.filteredUsers.slice(from, to);
+    }
   },
   created() {
     this.fetchUsers();
@@ -142,6 +161,9 @@ export default {
         this.activeSort.date = false;
         this.activeSort.rating = false;
       }
+    },
+    pageClick(page) {
+      this.pageNumber = page;
     }
   },
 
@@ -179,6 +201,7 @@ export default {
   button {
     cursor: pointer;
   }
+
   .deleteUser-btn {
     width: 50px;
     height: 30px;
@@ -186,6 +209,26 @@ export default {
     background-color: #f80000;
     color: #ffffff;
 
+  }
+
+  .pages_container {
+    display: flex;
+    justify-content: center;
+
+    .pages .page {
+      display: inline-block;
+      list-style: none;
+      margin-right: 10px;
+      padding: 10px;
+      border: 1px solid #000000;
+      cursor: pointer;
+    }
+
+    .page_selected {
+      background-color: aqua;
+      cursor: pointer;
+      color: #ff0000;
+    }
   }
 }
 </style>
